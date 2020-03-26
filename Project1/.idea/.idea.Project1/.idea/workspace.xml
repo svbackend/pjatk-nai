@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d3d6e784-0968-48b3-b747-77b020b6cd77" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Program.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/92B5E598-6D6C-4D94-8B37-43C9DCEF6A74/2D/Object.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/iristest.csv" />
+        <option value="$PROJECT_DIR$/iristrain.csv" />
+        <option value="$PROJECT_DIR$/Program.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1ZeYCoMDloTPFUGXoAr1lXEsstU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Rider.SolutionExplorerActivator" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Project1" type="DotNetProject" factoryName=".NET Project">
+      <option name="EXE_PATH" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/Project1.csproj" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="DotNetCore" />
+      <option name="PROJECT_TFM" value="" />
+      <method v="2">
+        <option name="Build" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d3d6e784-0968-48b3-b747-77b020b6cd77" name="Default Changelist" comment="" />
+      <created>1585200903025</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1585200903025</updated>
+      <workItem from="1585200907984" duration="8332000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="WindowStateProjectService">
+    <state width="1874" height="579" key="GridCell.Tab.0.bottom" timestamp="1585212005288">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state width="1874" height="579" key="GridCell.Tab.0.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1585212005288" />
+    <state width="1874" height="579" key="GridCell.Tab.0.center" timestamp="1585212005288">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state width="1874" height="579" key="GridCell.Tab.0.center/0.0.1920.1032@0.0.1920.1032" timestamp="1585212005288" />
+    <state width="1874" height="579" key="GridCell.Tab.0.left" timestamp="1585212005287">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state width="1874" height="579" key="GridCell.Tab.0.left/0.0.1920.1032@0.0.1920.1032" timestamp="1585212005287" />
+    <state width="1874" height="579" key="GridCell.Tab.0.right" timestamp="1585212005288">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state width="1874" height="579" key="GridCell.Tab.0.right/0.0.1920.1032@0.0.1920.1032" timestamp="1585212005288" />
+    <state x="624" y="233" key="run.anything.popup" timestamp="1585202626895">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state x="624" y="233" key="run.anything.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1585202626895" />
+  </component>
+</project>

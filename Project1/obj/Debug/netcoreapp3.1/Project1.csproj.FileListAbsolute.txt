@@ -1,0 +1,13 @@
+/home/vsaik/PJATK/NAI/code/knn/Project1/bin/Debug/netcoreapp3.1/Project1
+/home/vsaik/PJATK/NAI/code/knn/Project1/bin/Debug/netcoreapp3.1/Project1.deps.json
+/home/vsaik/PJATK/NAI/code/knn/Project1/bin/Debug/netcoreapp3.1/Project1.runtimeconfig.json
+/home/vsaik/PJATK/NAI/code/knn/Project1/bin/Debug/netcoreapp3.1/Project1.runtimeconfig.dev.json
+/home/vsaik/PJATK/NAI/code/knn/Project1/bin/Debug/netcoreapp3.1/Project1.dll
+/home/vsaik/PJATK/NAI/code/knn/Project1/bin/Debug/netcoreapp3.1/Project1.pdb
+/home/vsaik/PJATK/NAI/code/knn/Project1/obj/Debug/netcoreapp3.1/Project1.csprojAssemblyReference.cache
+/home/vsaik/PJATK/NAI/code/knn/Project1/obj/Debug/netcoreapp3.1/Project1.csproj.CoreCompileInputs.cache
+/home/vsaik/PJATK/NAI/code/knn/Project1/obj/Debug/netcoreapp3.1/Project1.AssemblyInfoInputs.cache
+/home/vsaik/PJATK/NAI/code/knn/Project1/obj/Debug/netcoreapp3.1/Project1.AssemblyInfo.cs
+/home/vsaik/PJATK/NAI/code/knn/Project1/obj/Debug/netcoreapp3.1/Project1.dll
+/home/vsaik/PJATK/NAI/code/knn/Project1/obj/Debug/netcoreapp3.1/Project1.pdb
+/home/vsaik/PJATK/NAI/code/knn/Project1/obj/Debug/netcoreapp3.1/Project1.genruntimeconfig.cache
