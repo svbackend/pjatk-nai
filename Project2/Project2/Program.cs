@@ -5,15 +5,6 @@ using System.Linq;
 
 namespace Project2
 {
-    class Entry
-    {
-        public string Id { get; set; }
-        public double[] Inputs { get; set; }
-
-        public string Species { get; set; }
-        public string Prediction { get; set; }
-    }
-
     class Program
     {
         const int Dim = 4;
@@ -58,8 +49,9 @@ namespace Project2
                 lowerThreshold += (d - y) * a;
             }
 
-            for (int i = 0; i < Dim; i++)
-                System.Console.WriteLine(weights[i]);
+            
+            // for (int i = 0; i < Dim; i++)
+                // System.Console.WriteLine(weights[i]);
 
             //System.Console.WriteLine(lowerThreshold);
             //System.Console.WriteLine(upperThreshold);
