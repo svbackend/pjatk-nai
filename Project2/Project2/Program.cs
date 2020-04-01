@@ -84,6 +84,22 @@ namespace Project2
             }
 
             System.Console.WriteLine($"Correctness: {correct} of {all} were predicted correctly");
+            
+            Console.WriteLine();
+            Console.WriteLine("===USER ENTRY====");
+            Console.WriteLine("Provide Entry (csv, use comma as separator):");
+            string userEntryLine = Console.ReadLine();
+            var userEntryData = userEntryLine.Split(',');
+
+            double[] userInput = new double[Dim];
+            for (int i = 0; i < Dim; i++)
+            {
+                userInput[i] = Convert.ToDouble(userEntryData[i].ToString());
+            }
+            
+            double userEntryPrediction = CalcY(lowerThreshold, upperThreshold, weights, userInput);
+            Console.WriteLine("Prediction:");
+            Console.WriteLine(GetSpeciesByD(userEntryPrediction));
         }
 
         static double CalcY(double lowerThreshold, double upperThreshold, double[] weights, double[] inputs)
@@ -138,6 +154,22 @@ namespace Project2
             }
 
             return d;
+        }
+
+        static string GetSpeciesByD(double d)
+        {
+            switch (d)
+            {
+                case 0:
+                    return "setosa";
+                case 0.5:
+                    return "versicolor";
+                case 1:
+                    return "virginica";
+                default:
+                    throw new InvalidDataException();
+                    break;
+            }
         }
     }
 }
