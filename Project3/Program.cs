@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace Project3
 {
@@ -8,94 +9,140 @@ namespace Project3
     {
         public const int NumberOfLetters = 26;
         
+        // <string> here is lang code (en/pl etc, depends on folder name in ./training)
+        public static Dictionary<string, Perceptron> perceptrons = new Dictionary<string, Perceptron>();
+
         static void Main(string[] args)
         {
+            var langs = GetInputs();
+            double a = .5;
+
+            foreach (var lang in langs)
+            {
+                perceptrons.Add(lang.Key, new Perceptron(NumberOfLetters, a));
+            }
+
+            double totalErrorRate = 0;
+            while (totalErrorRate < 10)
+            {
+                foreach (var lang in langs)
+                {
+                    totalErrorRate += Train(lang.Value, lang.Key);
+                }
+                
+                Console.WriteLine(totalErrorRate.ToString());
+            }
+        }
+
+        private static Dictionary<string, double[]> GetInputs()
+        {
+            var firstASCII = 97;
             var langsDirs = Directory.GetDirectories("./training");
-            var langs = new Dictionary<string, Dictionary<char, double>>(); // "en" => [a => 0.6, b => .8], pl => [...]
+            var langs = new Dictionary<string, double[]>(); // "en" => [ASCII => 0.6, ASCII => .8], pl => [...]
 
             foreach (string langDir in langsDirs)
             {
-                langs.Add(langDir, new Dictionary<char, double>());
                 var langFiles = Directory.GetFiles(langDir);
+                langs.Add(langDir, new double[NumberOfLetters]);
+                var totalChars = 0;
+                
                 foreach (var file in langFiles)
                 {
-                    var bytes = File.ReadAllBytes(file);
+                    var bytes = Encoding.ASCII.GetBytes(File.ReadAllText(file).ToLower());
+                    totalChars += bytes.Length;
                     foreach (var ascii in bytes)
                     {
-                        var c = Convert.ToChar(ascii);
-                        if (langs[langDir].ContainsKey(c))
+                        var key = ascii - firstASCII;
+                        if (key >= 0 && key < langs[langDir].Length)
                         {
-                            var currentVal = langs[langDir].GetValueOrDefault(c, 1);
-                            langs[langDir].Remove(c);
-                            langs[langDir].Add(c, currentVal + 1);
+                            langs[langDir][key] += 1;
                         }
-                        else
-                        {
-                            langs[langDir].Add(c, 1);
-                        }
-                        
                     }
+                }
+                
+                for (var i = 0; i < langs[langDir].Length; i++)
+                {
+                    langs[langDir][i] /= totalChars;
                 }
             }
 
-            var numberOfLangs = 3;
-            var numberOfDocs = 3;
-            double threshold = .0;
-            double a = .5;
-            
-            List<Perceptron> perceptrons = new List<Perceptron>();
-            for (int i = 0; i < NumberOfLetters; i++)
-            {
-                perceptrons.Add(new Perceptron(NumberOfLetters, a));
-            }
-            
-            // double totalErrorRate = 0;
-            // while(totalErrorRate < 17.72)
-            // {
-            //     totalErrorRate = 0;
-            //     for (int i = 0; i < numberOfLangs; i++)
-            //     {
-            //         for (int j = 0; j < numberOfDocs; j++)
-            //         {
-            //             totalErrorRate += 1;
-            //         }
-            //     }
-            //     
-            // }
+            return langs;
         }
-        
-        static bool CalcY(double threshold, double[] weights, double[] inputs)
-        {
-            double sum = 0.0;
 
-            for (int i = 0; i < NumberOfLetters; i++)
+        /**
+         * Inputs = [ASCII CODE => HOW MANY TIMES THIS CHAR WAS USED DIVIDED BY TOTAL NUMBER OF CHARS]
+         * Text: "hello world" (11 chars), let's assume that "l" represented as 0 in ASCII then input would looks like:
+         * [0 => 3/11, ...other chars]
+         */
+        private static double Train(double[] inputs, string lang)
+        {
+            //1/2(sum(d-y)^2)
+            double errorRate = 0;
+
+            foreach (var perceptron in perceptrons)
             {
-                sum += weights[i] * inputs[i];
+                double d = perceptron.Key == lang ? 1 : 0;
+                double activation = perceptron.Value.Predict(inputs); // y
+                perceptron.Value.UpdateWeights(inputs, d, activation);
+                errorRate += (d - activation) * (d - activation);
             }
 
-            return sum >= threshold;
+            return errorRate / 2;
         }
     }
 
     class Perceptron
     {
         private double[] weights;
-        
+        private double a;
+
         public Perceptron(int numberOfLetters, double a)
         {
-            double[] weights = new double[numberOfLetters];
-            
-            double length = 0;
-            for (int i = 0; i < numberOfLetters; i++)
-            {
-                length += weights[i] * weights[i];
-            }
-                
-            length = Math.Sqrt(length);
+            weights = new double[numberOfLetters];
 
-            for (int i = 0; i < numberOfLetters; i++)
+            for (int i = 0; i < weights.Length; i++)
             {
-                weights[i] /= length;    
+                weights[i] = .1;
+            }
+            
+            this.a = a;
+
+            NormalizeWeights();
+        }
+
+        public double Predict(double[] inputs)
+        {
+            double x = 0;
+            for (int i = 0; i < inputs.Length; i++)
+            {
+                x += inputs[i] * weights[i];
+            }
+
+            return 1 / (1 + Math.Exp(-x)); // sigmoid function 1 / ( 1 + e^(-x) )
+        }
+
+        public void UpdateWeights(double[] inputs, double d, double y)
+        {
+            for (int i = 0; i < inputs.Length; i++)
+            {
+                weights[i] += (d - y) * inputs[i] * a;
+            }
+            
+            NormalizeWeights();
+        }
+
+        public void NormalizeWeights()
+        {
+            double sum = 0;
+            for (int i = 0; i < weights.Length; i++)
+            {
+                sum += weights[i] * weights[i];   
+            }
+
+            sum = Math.Sqrt(sum);
+            for (int i = 0; i < weights.Length; i++)
+            {
+                weights[i] /= sum;
             }
         }
     }
