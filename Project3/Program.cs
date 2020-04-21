@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Project3
@@ -8,6 +9,7 @@ namespace Project3
     class Program
     {
         public const int NumberOfLetters = 26;
+        public const int FirstASCII = 97;
 
         // <string> here is lang code (en/pl etc, depends on folder name in ./training)
         public static Dictionary<string, Perceptron> perceptrons = new Dictionary<string, Perceptron>();
@@ -17,11 +19,11 @@ namespace Project3
         static void Main(string[] args)
         {
             langs = GetInputs();
-            double a = 2.5;
+            double alpha = 1.5;
 
             foreach (var lang in langs)
             {
-                perceptrons.Add(lang.Key, new Perceptron(NumberOfLetters, a));
+                perceptrons.Add(lang.Key, new Perceptron(NumberOfLetters, alpha));
             }
 
             for (var generation = 0; generation < 10; generation++)
@@ -30,16 +32,6 @@ namespace Project3
                 {
                     Train(lang.Value, lang.Key);
                 }
-
-                if (generation == 9)
-                {
-                    foreach (var perceptron in perceptrons)
-                    {
-                        var w = String.Join(",", perceptron.Value.weights);
-                        Console.WriteLine($"{perceptron.Key}: {w}");
-                        Console.WriteLine("====");
-                    }
-                }
             }
 
             Console.WriteLine();
@@ -47,47 +39,80 @@ namespace Project3
             foreach (var lang in langs)
             {
                 string prediction = Predict(lang.Value);
-                var w = String.Join(",", lang.Value);
-                Console.WriteLine($"Input: {w}");
-                Console.WriteLine($"Expected: {lang.Key}");
-                Console.WriteLine($"Actual: {prediction}");
-                Console.WriteLine();
+                if (lang.Key != prediction)
+                {
+                    Console.WriteLine($"Expected: {lang.Key}");
+                    Console.WriteLine($"Actual: {prediction}");
+                    Console.WriteLine();
+                }
             }
+
+            var customTextInput = GetInputByFile("./training/test.txt", true);
+            Console.WriteLine();
+            var result = Predict(customTextInput);
+            //Console.WriteLine(String.Join("|", customTextInput));
+            Console.WriteLine($"test.txt Prediction: {result}");
         }
 
         private static Dictionary<string, double[]> GetInputs()
         {
-            var firstASCII = 97;
             var langsDirs = Directory.GetDirectories("./training");
 
             var langs = new Dictionary<string, double[]>(); // "en" => [ASCII => 0.6, ASCII => .8], pl => [...]
             foreach (string langDir in langsDirs)
             {
                 var langFiles = Directory.GetFiles(langDir);
-                langs.Add(langDir, new double[NumberOfLetters]);
+                var lang = langDir.Split("/").Last();
+                langs.Add(lang, new double[NumberOfLetters]);
+                
+                for (int i = 0; i < langs[lang].Length; i++)
+                    langs[lang][i] = 0;
+                
                 var totalChars = 0;
-
                 foreach (var file in langFiles)
                 {
-                    var bytes = Encoding.ASCII.GetBytes(File.ReadAllText(file).ToLower());
-                    totalChars += bytes.Length;
-                    foreach (var ascii in bytes)
+                    var input = GetInputByFile(file, false);
+                    for (int i = 0; i < input.Length; i++)
                     {
-                        var key = ascii - firstASCII;
-                        if (key >= 0 && key < langs[langDir].Length)
-                        {
-                            langs[langDir][key] += 1;
-                        }
+                        langs[lang][i] += input[i];
+                        totalChars += (int)input[i];
                     }
                 }
 
-                for (var i = 0; i < langs[langDir].Length; i++)
+                for (var i = 0; i < langs[lang].Length; i++)
                 {
-                    langs[langDir][i] /= totalChars;
+                    langs[lang][i] /= totalChars;
                 }
             }
 
             return langs;
+        }
+
+        public static double[] GetInputByFile(string file, bool divideByTotal)
+        {
+            var bytes = Encoding.ASCII.GetBytes(File.ReadAllText(file).ToLower());
+            double[] result = new double[NumberOfLetters];
+            var totalChars = 0;
+            
+            foreach (var ascii in bytes)
+            {
+                var key = ascii - FirstASCII;
+                if (key >= 0 && key < NumberOfLetters)
+                {
+                    totalChars += 1;
+                    result[key] += 1;
+                }
+            }
+
+            if (divideByTotal)
+            {
+                for (int i = 0; i < result.Length; i++)
+                {
+                    result[i] /= totalChars;
+                }
+            }
+
+            return result;
         }
 
         /**
@@ -109,7 +134,7 @@ namespace Project3
             return errorRate / 2;
         }
 
-        static string Predict(double[] inputs)
+        static string Predict(double[] inputs, bool printConfidence = false)
         {
             string prediction = "";
 
@@ -124,7 +149,11 @@ namespace Project3
                 }
             }
 
-            Console.WriteLine($"Confidence: {maxConfidence}");
+            if (printConfidence)
+            {
+                Console.WriteLine($"Confidence: {maxConfidence}");
+            }
+            
             return prediction;
         }
     }
@@ -132,9 +161,9 @@ namespace Project3
     class Perceptron
     {
         public double[] weights;
-        public double a;
+        public double Alpha;
 
-        public Perceptron(int numberOfLetters, double a)
+        public Perceptron(int numberOfLetters, double alpha)
         {
             weights = new double[numberOfLetters];
 
@@ -143,7 +172,7 @@ namespace Project3
                 weights[i] = .1;
             }
 
-            this.a = a;
+            this.Alpha = alpha;
 
             NormalizeWeights();
         }
@@ -163,7 +192,7 @@ namespace Project3
         {
             for (int i = 0; i < inputs.Length; i++)
             {
-                weights[i] += (d - y) * inputs[i] * a;
+                weights[i] += (d - y) * inputs[i] * Alpha;
             }
 
             NormalizeWeights();

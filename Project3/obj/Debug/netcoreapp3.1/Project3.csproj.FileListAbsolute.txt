@@ -20,3 +20,4 @@
 /home/vsaik/PJATK/NAI/code/knn/Project3/bin/Debug/netcoreapp3.1/training/en/3.txt
 /home/vsaik/PJATK/NAI/code/knn/Project3/bin/Debug/netcoreapp3.1/training/en/4.txt
 /home/vsaik/PJATK/NAI/code/knn/Project3/bin/Debug/netcoreapp3.1/training/fr/3.txt
+/home/vsaik/PJATK/NAI/code/knn/Project3/bin/Debug/netcoreapp3.1/training/test.txt
