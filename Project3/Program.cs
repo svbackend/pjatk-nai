@@ -26,7 +26,7 @@ namespace Project3
                 perceptrons.Add(lang.Key, new Perceptron(NumberOfLetters, alpha));
             }
 
-            for (var generation = 0; generation < 10; generation++)
+            for (var generation = 0; generation < 10000; generation++)
             {
                 foreach (var lang in langs)
                 {
