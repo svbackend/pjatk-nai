@@ -1,0 +1,14 @@
+/home/vsaik/PJATK/NAI/code/knn/Project6/Project6/bin/Debug/netcoreapp3.1/Project6
+/home/vsaik/PJATK/NAI/code/knn/Project6/Project6/bin/Debug/netcoreapp3.1/knapsack_data.txt
+/home/vsaik/PJATK/NAI/code/knn/Project6/Project6/bin/Debug/netcoreapp3.1/Project6.deps.json
+/home/vsaik/PJATK/NAI/code/knn/Project6/Project6/bin/Debug/netcoreapp3.1/Project6.runtimeconfig.json
+/home/vsaik/PJATK/NAI/code/knn/Project6/Project6/bin/Debug/netcoreapp3.1/Project6.runtimeconfig.dev.json
+/home/vsaik/PJATK/NAI/code/knn/Project6/Project6/bin/Debug/netcoreapp3.1/Project6.dll
+/home/vsaik/PJATK/NAI/code/knn/Project6/Project6/bin/Debug/netcoreapp3.1/Project6.pdb
+/home/vsaik/PJATK/NAI/code/knn/Project6/Project6/obj/Debug/netcoreapp3.1/Project6.csprojAssemblyReference.cache
+/home/vsaik/PJATK/NAI/code/knn/Project6/Project6/obj/Debug/netcoreapp3.1/Project6.csproj.CoreCompileInputs.cache
+/home/vsaik/PJATK/NAI/code/knn/Project6/Project6/obj/Debug/netcoreapp3.1/Project6.AssemblyInfoInputs.cache
+/home/vsaik/PJATK/NAI/code/knn/Project6/Project6/obj/Debug/netcoreapp3.1/Project6.AssemblyInfo.cs
+/home/vsaik/PJATK/NAI/code/knn/Project6/Project6/obj/Debug/netcoreapp3.1/Project6.dll
+/home/vsaik/PJATK/NAI/code/knn/Project6/Project6/obj/Debug/netcoreapp3.1/Project6.pdb
+/home/vsaik/PJATK/NAI/code/knn/Project6/Project6/obj/Debug/netcoreapp3.1/Project6.genruntimeconfig.cache
