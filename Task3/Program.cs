@@ -14,14 +14,15 @@ namespace Task3
         // <string> here is lang code (en/pl etc, depends on folder name in ./training)
         public readonly static Dictionary<string, Perceptron> Perceptrons = new();
 
-        public static Dictionary<string, double[]> InputVectors;
+        public static Dictionary<string, double[]> TrainingInputVectors;
+        public static Dictionary<string, double[]> TestingInputVectors;
 
         static void Main(string[] args)
         {
-            InputVectors = GetInputs(); // key = lang code, value => input vector (x)
+            TrainingInputVectors = GetInputs("./training"); // key = lang code, value => input vector (x)
             double alpha = .25;
 
-            foreach (var lang in InputVectors.Keys)
+            foreach (var lang in TrainingInputVectors.Keys)
             {
                 Perceptrons.Add(lang, new Perceptron(NumberOfLetters, alpha));
             }
@@ -30,7 +31,7 @@ namespace Task3
             var globalErrorRate = .0;
             for (var g = 0; g < generations; g++)
             {
-                foreach (var lang in InputVectors)
+                foreach (var lang in TrainingInputVectors)
                 {
                     globalErrorRate += Train(lang.Value, lang.Key); // todo deal with error rate
                 }
@@ -46,7 +47,8 @@ namespace Task3
 
             Console.WriteLine();
 
-            foreach (var lang in InputVectors)
+            TestingInputVectors = GetInputs("./testing"); // key = lang code, value => input vector (x)
+            foreach (var lang in TestingInputVectors)
             {
                 string prediction = Predict(lang.Value);
                 if (lang.Key != prediction)
@@ -57,21 +59,27 @@ namespace Task3
                 }
             }
 
-            var customTextInput = GetInputByFile("./training/test.txt");
+            var customTextInput = GetInputByFile("./testing/test.txt");
             Console.WriteLine();
             var result = Predict(customTextInput);
             //Console.WriteLine(String.Join("|", customTextInput));
             Console.WriteLine($"test.txt Prediction: {result}");
         }
 
-        private static Dictionary<string, double[]> GetInputs()
+        private static Dictionary<string, double[]> GetInputs(string dir)
         {
-            var langsDirs = Directory.GetDirectories("./training");
+            var langsDirs = Directory.GetDirectories(dir);
 
             var langs = new Dictionary<string, double[]>(); // "en" => [ASCII => 0.6, ASCII => .8], pl => [...]
             foreach (string langDir in langsDirs)
             {
                 var langFiles = Directory.GetFiles(langDir);
+
+                if (langFiles.Length == 0)
+                {
+                    continue;
+                }
+                
                 var lang = langDir.Split("/").Last();
                 langs.Add(lang, new double[NumberOfLetters]);
 
@@ -152,7 +160,7 @@ namespace Task3
             string prediction = "";
 
             double maxConfidence = 0;
-            foreach (var lang in InputVectors)
+            foreach (var lang in TrainingInputVectors)
             {
                 double value = Perceptrons[lang.Key].Predict(inputs);
                 if (value >= maxConfidence)
