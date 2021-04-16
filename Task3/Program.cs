@@ -15,7 +15,7 @@ namespace Task3
         public readonly static Dictionary<string, Perceptron> Perceptrons = new();
 
         public static Dictionary<string, double[]> TrainingInputVectors;
-        public static Dictionary<string, double[]> TestingInputVectors;
+        public static Dictionary<string, IEnumerable<double[]>> TestingInputVectors;
 
         static void Main(string[] args)
         {
@@ -47,21 +47,35 @@ namespace Task3
 
             Console.WriteLine();
 
-            TestingInputVectors = GetInputs("./testing"); // key = lang code, value => input vector (x)
-            foreach (var lang in TestingInputVectors)
+            TestingInputVectors = GetTestingInputs("./testing"); // key = lang code, value => input vector (x)
+            var total = 0;
+            var correct = 0;
+            foreach (var keyValuePair in TestingInputVectors)
             {
-                string prediction = Predict(lang.Value);
-                if (lang.Key != prediction)
+                foreach (var inputVector in keyValuePair.Value)
                 {
-                    Console.WriteLine($"Expected: {lang.Key}");
-                    Console.WriteLine($"Actual: {prediction}");
-                    Console.WriteLine();
+                    string prediction = Predict(inputVector);
+                    if (keyValuePair.Key != prediction)
+                    {
+                        Console.WriteLine($"Expected: {keyValuePair.Key}");
+                        Console.WriteLine($"Actual: {prediction}");
+                        Console.WriteLine();
+                    }
+                    else
+                    {
+                        correct++;
+                    }
+
+                    total++;
                 }
             }
+            
+            Console.WriteLine($"Correctness: {correct} of {total} were predicted correctly");
 
-            var customTextInput = GetInputByFile("./testing/test.txt");
+            var customTextInput = NormalizeVector(GetInputByFile("./testing/test.txt"));
+            
             Console.WriteLine();
-            var result = Predict(customTextInput);
+            var result = Predict(customTextInput, true);
             //Console.WriteLine(String.Join("|", customTextInput));
             Console.WriteLine($"test.txt Prediction: {result}");
         }
@@ -95,6 +109,34 @@ namespace Task3
                 langs[lang] = NormalizeVector(langs[lang]);
                 
                 Console.WriteLine();
+            }
+
+            return langs;
+        }
+
+        private static Dictionary<string, IEnumerable<double[]>> GetTestingInputs(string dir)
+        {
+            var langsDirs = Directory.GetDirectories(dir);
+
+            var langs = new Dictionary<string, IEnumerable<double[]>>(); // "en" => [ASCII => 0.6, ASCII => .8], pl => [...]
+            foreach (string langDir in langsDirs)
+            {
+                var langFiles = Directory.GetFiles(langDir);
+
+                if (langFiles.Length == 0)
+                {
+                    continue;
+                }
+                
+                var lang = langDir.Split("/").Last();
+                var inputs = new List<double[]>();
+                langs.Add(lang, inputs);
+
+                foreach (var file in langFiles)
+                {
+                    var input =   NormalizeVector(GetInputByFile(file));
+                    inputs.Add(input);
+                }
             }
 
             return langs;
@@ -159,7 +201,7 @@ namespace Task3
         {
             string prediction = "";
 
-            double maxConfidence = 0;
+            double maxConfidence = .0;
             foreach (var lang in TrainingInputVectors)
             {
                 double value = Perceptrons[lang.Key].Predict(inputs);
