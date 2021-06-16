@@ -17,6 +17,14 @@ T:4
 P:13
 \n:1
 ";
+//             var input = @"
+// A:3
+// B:4
+// C:6
+// D:6
+// E:7
+// F:8
+// ";
             var chars = input.Split("\n");
 
             var charFreqs = new SortedDictionary<string, int>();
@@ -85,6 +93,7 @@ P:13
 
                         leafs.Add(leftNode);
                         leafs.Add(rightNode);
+                        prevCharFreq = null;
 
                         strategy = 2;
                         continue;
@@ -114,9 +123,69 @@ P:13
                         }
                         else
                         {
-                            prevCharFreq = charFreq;
-                            strategy = 1;
-                            continue;
+                            if (subtrees.Count == 0)
+                            {
+                                prevCharFreq = charFreq;
+                                strategy = 1;
+                                continue;
+                            }
+                            else
+                            {
+                                Node attachTo;
+                                var subtreeRootNode = subtrees[0];
+                                var needToUpdSubtree = false;
+                                if (subtreeRootNode.freq <= prevNode.freq)
+                                {
+                                    attachTo = subtreeRootNode;
+                                    subtrees.Remove(subtreeRootNode);
+                                    needToUpdSubtree = true;
+                                }
+                                else
+                                {
+                                    attachTo = prevNode;
+                                }
+                                
+                                var newParent = new Node
+                                {
+                                    freq = attachTo.freq + charFreq.Value
+                                };
+                                    
+                                Node l;
+                                Node r;
+                                var newChild = new Node
+                                {
+                                    freq = charFreq.Value,
+                                    ch = charFreq.Key
+                                };
+                                leafs.Add(newChild);
+                                if (attachTo.freq <= charFreq.Value)
+                                {
+                                    l = attachTo;
+                                    r = newChild;
+                                }
+                                else
+                                {
+                                    l = newChild;
+                                    r = attachTo;
+                                }
+
+                                l.parent = newParent;
+                                l.prefix = "0";
+
+                                r.parent = newParent;
+                                r.prefix = "1";
+                                if (needToUpdSubtree)
+                                {
+                                    subtrees.Add(newParent);
+                                }
+                                else
+                                {
+                                    
+                                    prevNode = newParent;
+                                }
+
+                                continue;
+                            }
                         }
 
                         continue;
@@ -153,7 +222,7 @@ P:13
 
                             Node l;
                             Node r;
-                            if (prevNode.freq < newParent.freq)
+                            if (prevNode.freq <= newParent.freq)
                             {
                                 l = prevNode;
                                 r = newParent;
@@ -171,6 +240,34 @@ P:13
                             r.prefix = "1";
                         }
                     }
+                    else if (prevNode != null && subtrees.Count > 0)
+                    {
+                        var subtree = subtrees[0];
+                        var root = new Node
+                        {
+                            freq = prevNode.freq + subtree.freq
+                        };
+
+                        Node l;
+                        Node r;
+
+                        if (subtree.freq <= prevNode.freq)
+                        {
+                            l = subtree;
+                            r = prevNode;
+                        }
+                        else
+                        {
+                            l = prevNode;
+                            r = subtree;
+                        }
+
+                        l.parent = root;
+                        l.prefix = "0";
+                        
+                        r.parent = root;
+                        r.prefix = "1";
+                    }
                 }
             }
 
@@ -178,6 +275,11 @@ P:13
             foreach (var leaf in leafs)
             {
                 Console.WriteLine($"{leaf.ch} = {leaf.GetPrefixCode()} ({leaf.freq})");
+            }
+
+            foreach (var tree in subtrees)
+            {
+                Console.WriteLine(tree.freq);
             }
         }
     }
